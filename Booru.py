@@ -10,7 +10,11 @@ class Fetchbooru:
     
     async def find_rand_img(self,ctx):
     # Combine the query words with underscores to form the query
-        query = "_".join(self.query_words)
+        #query = "_".join(self.query_words)
+        if self.query_words == 'fate_(series)':
+            query = self.query_words
+        else:
+            query = "_".join(self.query_words)
 
         # Danbooru API URL to fetch a random image with the specified query
         danbooru_api_url = f"https://danbooru.donmai.us/posts/random.json?tags={query}"

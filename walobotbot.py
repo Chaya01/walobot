@@ -69,8 +69,17 @@ async def xualo(ctx):
 async def danbooru(ctx, *query_words):
     query = Fetchbooru(query_words)
     image = await query.find_rand_img(ctx)
+    await ctx.message.delete()
     await ctx.send(image)
-    
+
+@bot.command()
+async def yapocarlos(ctx):
+    carlos = (f'fate_(series)')
+    query = Fetchbooru(carlos)
+    image = await query.find_rand_img(ctx)
+    await ctx.message.delete()
+    await ctx.send('ya po carlos')
+    await ctx.send(image)
 
 @bot.command()
 async def loremipsum(ctx): 
