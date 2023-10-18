@@ -112,7 +112,7 @@ async def tmr(ctx):
     }
 
     final_string = switch_dict.get(rand_number, "{}").format(ctx.author.mention)
-    image = fetcher("peru")
+    image = fetcher("peru serrano")
 
     await ctx.message.delete()
     await ctx.send(final_string)
