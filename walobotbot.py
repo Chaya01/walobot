@@ -18,12 +18,14 @@ intents.message_content = True  # Enable the message content intent
 # Create a bot instance with the intents parameter
 bot = commands.Bot(command_prefix='$', intents=intents)
 
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
     print(f'Connected to the following guilds:')
     for guild in bot.guilds:
         print(f'- {guild.name} (ID: {guild.id})')
+
 
 @bot.command()
 async def random_number(ctx):
@@ -32,6 +34,7 @@ async def random_number(ctx):
     random_num = random.randint(1, 100)
     print(f"Generated random number: {random_num}")
     await ctx.send(f"Random Number: {random_num}")
+
 
 @bot.event 
 async def on_message(message): 
@@ -56,9 +59,11 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+
 @bot.command()
 async def ping(ctx): 
   await ctx.send('pong!')
+
 
 @bot.command()
 async def xualo(ctx): 
@@ -91,30 +96,30 @@ async def danbooru_image(ctx, *query_words):
     except Exception as e:
         await ctx.send(f"An error occurred: {e}")
 
+
 @bot.command()
-async def tmr(ctx,):
-    # Combine the query words with underscores to form the query
-    query = "_".join(query_words)
+async def tmr(ctx):
+    final_string = '';
+    rand_number = random.randint(1, 6)
+    #Generate a int based on a random nuumber
+    switch_dict = {
+        1: "@everyone {} Ha hecho el llamado a la DOTA",
+        2: "@everyone {} dice AGG KGADAS NO SABEN JUGAR (VENGAN AL DOTA)",
+        3: "@everyone {} dice a tiltearse cabros",
+        4: "@everyone {} dice que carrea",
+        5: "@everyone Cabros me mataron - {}",
+        6: "@everyone EKIS DE - {}",
+    }
 
-    # Danbooru API URL to fetch a random image with the specified query
-    danbooru_api_url = f"https://danbooru.donmai.us/posts/random.json?tags={query}"
+    final_string = switch_dict.get(rand_number, "{}").format(ctx.author.mention)
+    image = fetcher("peru")
 
-    try:
-        # Make a request to the Danbooru API
-        response = requests.get(danbooru_api_url)
+    await ctx.message.delete()
+    await ctx.send(final_string)
+    await ctx.send(image.find_random_image_tenor())
 
-        if response.status_code == 200:
-            danbooru_data = response.json()
 
-            if not danbooru_data:
-                await ctx.send(f"Tag '{query}' not found.")
-            else:
-                image_url = danbooru_data["file_url"]
-                await ctx.send(image_url)
-        else:
-            await ctx.send("Unable to find an image for the specified query.")
-    except Exception as e:
-        await ctx.send(f"An error occurred: {e}")
+@bot.command()       
 async def loremipsum(ctx): 
   username = ctx.author.name
   lorem = 'Lorem ipsum dolor sit cuchuflí barquillo bacán jote gamba listeilor po cahuín, luca melón con vino pichanga coscacho ni ahí peinar la muñeca chuchada al chancho achoclonar. Chorrocientos pituto ubicatex huevo duro bolsero cachureo el hoyo del queque en cana huevón el año del loly hacerla corta impeque de miedo quilterry la raja longi ñecla. Hilo curado rayuela carrete quina guagua lorea piola ni ahí.'
