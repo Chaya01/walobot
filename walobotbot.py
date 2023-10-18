@@ -5,6 +5,8 @@ import requests
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 from discord.ext import commands
+import re
+from Fetcher import FetchImages as fetcher
 
 # Define your bot's command prefix
 #bot_prefix = "!"
@@ -88,6 +90,55 @@ async def danbooru_image(ctx, *query_words):
             await ctx.send("Unable to find an image for the specified query.")
     except Exception as e:
         await ctx.send(f"An error occurred: {e}")
+
+@bot.command()
+async def loremipsum(ctx): 
+  username = ctx.author.name
+  lorem = 'Lorem ipsum dolor sit cuchuflí barquillo bacán jote gamba listeilor po cahuín, luca melón con vino pichanga coscacho ni ahí peinar la muñeca chuchada al chancho achoclonar. Chorrocientos pituto ubicatex huevo duro bolsero cachureo el hoyo del queque en cana huevón el año del loly hacerla corta impeque de miedo quilterry la raja longi ñecla. Hilo curado rayuela carrete quina guagua lorea piola ni ahí.'
+  await ctx.send('Solicitado por: ' + str(username))
+  await ctx.send(lorem)
+
+@bot.command() 
+async def wate(ctx, member: discord.Member = None): 
+    final_string = '';
+    if member is None:
+        final_string = 'Oye '+ ctx.author.mention +' Walobot te ha pegado un wate porque no indicaste a quien pegarle'
+    elif str(ctx.author.id) == str(member.id):
+        final_string = ctx.author.mention+ ' se ha pegado un wate, el muy perkin'
+    else:
+        final_string = ctx.author.mention+ ' le ha pegado un wate a ' + member.mention
+
+    image = fetcher("slap")
+
+    await ctx.message.delete()
+    await ctx.send(final_string)
+    await ctx.send(image.find_random_image_tenor())
+
+
+@bot.command() 
+async def combos(ctx, *members: discord.Member):
+    final_string = ''
+    if len(members) == 0:
+        final_string = 'Oye '+ ctx.author.mention +' Walobot te ha pegado unos combos porque no indicaste a quien pegarle'
+    elif len(members) == 1:
+        if str(ctx.author.id) == str(members[0].id):
+            final_string = ctx.author.mention+ ' se ha pegado combos a si mismo, el muy perkin'
+        else:
+            final_string = ctx.author.mention+ ' le ha pegado combos a ' + members[0].mention
+    else:
+        users = ''
+        for member in members:
+            users = users + member.mention + " "
+        final_string = ctx.author.mention+ ' ha repartdo combos a ' + users
+
+    image = fetcher("punch")
+
+    await ctx.message.delete()
+    await ctx.send(final_string)
+    await ctx.send(image.find_random_image_tenor())
+
+
+
 
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
