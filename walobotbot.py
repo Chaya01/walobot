@@ -2,11 +2,10 @@ import discord
 import random
 import os
 import requests
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
 from discord.ext import commands
 import re
 from Fetcher import FetchImages as fetcher
+from Booru import Fetchbooru
 
 # Define your bot's command prefix
 #bot_prefix = "!"
@@ -67,29 +66,11 @@ async def xualo(ctx):
 
 
 @bot.command()
-async def danbooru_image(ctx, *query_words):
-    # Combine the query words with underscores to form the query
-    query = "_".join(query_words)
-
-    # Danbooru API URL to fetch a random image with the specified query
-    danbooru_api_url = f"https://danbooru.donmai.us/posts/random.json?tags={query}"
-
-    try:
-        # Make a request to the Danbooru API
-        response = requests.get(danbooru_api_url)
-
-        if response.status_code == 200:
-            danbooru_data = response.json()
-
-            if not danbooru_data:
-                await ctx.send(f"Tag '{query}' not found.")
-            else:
-                image_url = danbooru_data["file_url"]
-                await ctx.send(image_url)
-        else:
-            await ctx.send("Unable to find an image for the specified query.")
-    except Exception as e:
-        await ctx.send(f"An error occurred: {e}")
+async def danbooru(ctx, *query_words):
+    query = Fetchbooru(query_words)
+    image = await query.find_rand_img(ctx)
+    await ctx.send(image)
+    
 
 @bot.command()
 async def loremipsum(ctx): 
@@ -136,8 +117,6 @@ async def combos(ctx, *members: discord.Member):
     await ctx.message.delete()
     await ctx.send(final_string)
     await ctx.send(image.find_random_image_tenor())
-
-
 
 
 # Run the bot with your bot token
