@@ -89,5 +89,29 @@ async def danbooru_image(ctx, *query_words):
     except Exception as e:
         await ctx.send(f"An error occurred: {e}")
 
+@bot.command()
+async def tmr(ctx,):
+    # Combine the query words with underscores to form the query
+    query = "_".join(query_words)
+
+    # Danbooru API URL to fetch a random image with the specified query
+    danbooru_api_url = f"https://danbooru.donmai.us/posts/random.json?tags={query}"
+
+    try:
+        # Make a request to the Danbooru API
+        response = requests.get(danbooru_api_url)
+
+        if response.status_code == 200:
+            danbooru_data = response.json()
+
+            if not danbooru_data:
+                await ctx.send(f"Tag '{query}' not found.")
+            else:
+                image_url = danbooru_data["file_url"]
+                await ctx.send(image_url)
+        else:
+            await ctx.send("Unable to find an image for the specified query.")
+    except Exception as e:
+        await ctx.send(f"An error occurred: {e}")
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
