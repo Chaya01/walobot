@@ -166,7 +166,36 @@ async def combos(ctx, *members: discord.Member):
     await ctx.send(image.find_random_image_tenor())
 
 
+@bot.command()
+async def r34(ctx, *query_words):
+    # Combine the query words with underscores to form the query
+    query = "_".join(query_words)
 
+    # Danbooru API URL to fetch a random image with the specified query
+    r34_url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&limit=50&tags={query}&json=1"
+    print("pase")
+    try:
+        # Make a request to the Danbooru API
+        response = requests.get(r34_url)
+        print(response.status_code)
+        if response.status_code == 200:
+            r34_data = response.json()
+
+            if not r34_data:
+                await ctx.send(f"Tag '{query}' not found.")
+            else:
+                print(r34_data)
+                image_url = r34_data[random.randint(1, 50)]["file_url"]
+                sauce = r34_data[random.randint(1, 50)]["source"]
+                await ctx.send(image_url)
+                await ctx.send(f"Salsa {sauce}")
+
+        else:
+            await ctx.send("Unable to find an image for the specified query.")
+    except Exception as e:
+        await ctx.send(f"An error occurred: {e}")
 
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
+
+
