@@ -17,12 +17,14 @@ intents.message_content = True  # Enable the message content intent
 # Create a bot instance with the intents parameter
 bot = commands.Bot(command_prefix='$', intents=intents)
 
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
     print(f'Connected to the following guilds:')
     for guild in bot.guilds:
         print(f'- {guild.name} (ID: {guild.id})')
+
 
 @bot.command()
 async def random_number(ctx):
@@ -31,6 +33,7 @@ async def random_number(ctx):
     random_num = random.randint(1, 100)
     print(f"Generated random number: {random_num}")
     await ctx.send(f"Random Number: {random_num}")
+
 
 @bot.event 
 async def on_message(message): 
@@ -55,9 +58,11 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+
 @bot.command()
 async def ping(ctx): 
   await ctx.send('pong!')
+
 
 @bot.command()
 async def xualo(ctx): 
@@ -72,7 +77,31 @@ async def danbooru(ctx, *query_words):
     await ctx.message.delete()
     await ctx.send(image)
 
+
 @bot.command()
+async def tmr(ctx):
+    final_string = '';
+    rand_number = random.randint(1, 6)
+    #Generate a int based on a random nuumber
+    switch_dict = {
+        1: "@everyone {} Ha hecho el llamado a la DOTA",
+        2: "@everyone {} dice AGG KGADAS NO SABEN JUGAR (VENGAN AL DOTA)",
+        3: "@everyone {} dice a tiltearse cabros",
+        4: "@everyone {} dice que carrea",
+        5: "@everyone Cabros me mataron - {}",
+        6: "@everyone EKIS DE - {}",
+    }
+
+    final_string = switch_dict.get(rand_number, "{}").format(ctx.author.mention)
+    image = fetcher("peru serrano")
+
+    await ctx.message.delete()
+    await ctx.send(final_string)
+    message = await ctx.send(image.find_random_image_tenor())
+    await message.add_reaction("🇵🇪")
+
+
+@bot.command()       
 async def yapocarlos(ctx):
     carlos = 'fate_(series)'
     query = Fetchbooru(carlos)
@@ -135,5 +164,87 @@ async def combos(ctx, *members: discord.Member):
     await ctx.send(image.find_random_image_tenor())
 
 
+@bot.command()
+async def r34(ctx, *query_words):
+    # Combine the query words with underscores to form the query
+    query = "_".join(query_words)
+
+    # Set a thumbnail for the embed (optional)
+    
+
+
+    # Danbooru API URL to fetch a random image with the specified query
+    r34_url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&limit=50&tags={query}&json=1"
+    print("pase")
+    try:
+        # Make a request to the Danbooru API
+        response = requests.get(r34_url)
+        print(response.status_code)
+        if response.status_code == 200:
+            r34_data = response.json()
+
+            if not r34_data:
+                await ctx.send(f"Tag '{query}' not found.")
+            else:
+                print(r34_data)
+                embed = discord.Embed(
+                    title="Rule 34",
+                    description="Salsa "+ r34_data[random.randint(1, 50)]["source"],
+                    color=discord.Color.blue()  # You can set the color of the embed.
+                )
+
+                embed.set_image(url=r34_data[random.randint(1, 50)]["file_url"])
+                await ctx.send(embed=embed)
+                # await ctx.send(f"Salsa {sauce}", embed=embed)
+
+        else:
+            await ctx.send("Unable to find an image for the specified query.")
+    except Exception as e:
+        await ctx.send(f"An error occurred: {e}")
+
+@bot.command()       
+async def gei(ctx): 
+  username = ctx.author.name
+  pasta = 'No soy gay pero soy peruano y tengo una fantasia donde Perú invade Chile y Chile tiene que exportar esclavos femboys para satisfacer oficiales peruanos de alto rango. Me imagino que soy un comandante poderoso alto, con una mandibula cuadrada y con músculos masivos. Mi femboy es un pequeño chileno timido con piel palida que viene a mi habitacion. Lo agarro con mis poderosos brazos y lo beso a la fuerza, presionando su pecho contra el mio. Lo tiro contra la cama con mis grandes brazos quitándole sus pequeños calzones vírgenes. Le muestro mi masivo mastodonte peruano, y despues se la meto con todo, follándolo con una fuerza inhumana. Cada movimiento lo hace gemir, y finalrnente me corro en su pequeño culito chileno, dejando el semen corriendole por sus pequeñas nalgas, y después lo abrazo con mis grandes y fuertes brazos peruanos haciendolo dormir en mi pecho ¿Algún otro hetero tiene este tipo de fantasias?'
+  await ctx.message.delete()
+  await ctx.send(pasta)
+
+@bot.command()
+async def speak(ctx, channel_name, *, text_to_speak):
+    # Find the voice channel by name
+    for guild in bot.guilds:
+        for voice_channel in guild.voice_channels:
+            if voice_channel.name == channel_name:
+                voice_channel_to_join = voice_channel
+                break
+
+    if 'voice_channel_to_join' in locals():
+        voice_client = await voice_channel_to_join.connect()
+        await voice_client.say(text_to_speak, tts=True)
+        await voice_client.disconnect()
+    else:
+        await ctx.send(f"Voice channel '{channel_name}' not found.")
+        
+@bot.command()       
+async def pepe(ctx): 
+  username = ctx.author.name
+  pepe = '<:12g_ysp_pepe_king:1163577163086311527>'
+  pepe_cowboy = '<a:pepe_cowboy_fast:1163577259182018643>'
+
+  where_da_pepes_at = bot.get_channel(1162571489581744128)
+  await ctx.message.delete()
+  await where_da_pepes_at.send(pepe_cowboy)
+
+@bot.command()       
+async def peru(ctx): 
+  username = ctx.author.name
+
+  await ctx.message.delete()
+  message = await ctx.send("VIVA EL PERU CARAJO")
+  await message.add_reaction("🇵🇪")
+
+
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
+
+
