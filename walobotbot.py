@@ -169,24 +169,19 @@ async def r34(ctx, *query_words):
     # Combine the query words with underscores to form the query
     query = "_".join(query_words)
 
-    # Set a thumbnail for the embed (optional)
-    
-
-
     # Danbooru API URL to fetch a random image with the specified query
-    r34_url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&limit=50&tags={query}&json=1"
-    print("pase")
+    r34_url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&limit=50&tags={query}&json=1"\
+    
     try:
         # Make a request to the Danbooru API
         response = requests.get(r34_url)
-        print(response.status_code)
+
         if response.status_code == 200:
             r34_data = response.json()
 
             if not r34_data:
                 await ctx.send(f"Tag '{query}' not found.")
             else:
-                print(r34_data)
                 embed = discord.Embed(
                     title="Rule 34",
                     description="Salsa "+ r34_data[random.randint(1, 50)]["source"],
