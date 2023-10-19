@@ -215,7 +215,7 @@ async def speak(ctx, channel_name, *, text_to_speak):
 
     if 'voice_channel_to_join' in locals():
         voice_client = await voice_channel_to_join.connect()
-        await voice_client.say(text_to_speak, tts=True)
+        await ctx.send(text_to_speak, tts=True)
         await voice_client.disconnect()
     else:
         await ctx.send(f"Voice channel '{channel_name}' not found.")
