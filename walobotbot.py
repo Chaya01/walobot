@@ -74,13 +74,20 @@ async def danbooru(ctx, *query_words):
 
 @bot.command()
 async def yapocarlos(ctx):
-    carlos = (f'fate_(series)')
+    carlos = 'fate_(series)'
     query = Fetchbooru(carlos)
     image = await query.find_rand_img(ctx)
     await ctx.message.delete()
-    await ctx.send('ya po carlos')
-    await ctx.send(image)
+    # Create a Rich Embed
+    embed = discord.Embed(
+        title="Ya po carlos bajate el fate",
+        description="Fgo.",
+        color=0x0072b3  # You can specify your desired color here.
+    )
+    # Add the image URL to the card
+    embed.set_image(url=image)
 
+    await ctx.send(embed=embed)
 @bot.command()
 async def loremipsum(ctx): 
   username = ctx.author.name
