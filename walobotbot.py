@@ -116,7 +116,8 @@ async def tmr(ctx):
 
     await ctx.message.delete()
     await ctx.send(final_string)
-    await ctx.send(image.find_random_image_tenor())
+    message = await ctx.send(image.find_random_image_tenor())
+    await message.add_reaction("🇵🇪")
 
 
 @bot.command()       
@@ -201,6 +202,25 @@ async def gei(ctx):
   pasta = 'No soy gay pero soy peruano y tengo una fantasia donde Perú invade Chile y Chile tiene que exportar esclavos femboys para satisfacer oficiales peruanos de alto rango. Me imagino que soy un comandante poderoso alto, con una mandibula cuadrada y con músculos masivos. Mi femboy es un pequeño chileno timido con piel palida que viene a mi habitacion. Lo agarro con mis poderosos brazos y lo beso a la fuerza, presionando su pecho contra el mio. Lo tiro contra la cama con mis grandes brazos quitándole sus pequeños calzones vírgenes. Le muestro mi masivo mastodonte peruano, y despues se la meto con todo, follándolo con una fuerza inhumana. Cada movimiento lo hace gemir, y finalrnente me corro en su pequeño culito chileno, dejando el semen corriendole por sus pequeñas nalgas, y después lo abrazo con mis grandes y fuertes brazos peruanos haciendolo dormir en mi pecho ¿Algún otro hetero tiene este tipo de fantasias?'
   await ctx.message.delete()
   await ctx.send(pasta)
+
+@bot.command()       
+async def pepe(ctx): 
+  username = ctx.author.name
+  pepe = '<:12g_ysp_pepe_king:1163577163086311527>'
+  pepe_cowboy = '<a:pepe_cowboy_fast:1163577259182018643>'
+
+  where_da_pepes_at = bot.get_channel(1162571489581744128)
+  await ctx.message.delete()
+  await where_da_pepes_at.send(pepe_cowboy)
+
+@bot.command()       
+async def peru(ctx): 
+  username = ctx.author.name
+
+  await ctx.message.delete()
+  message = await ctx.send("VIVA EL PERU CARAJO")
+  await message.add_reaction("🇵🇪")
+
 
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
