@@ -171,6 +171,10 @@ async def r34(ctx, *query_words):
     # Combine the query words with underscores to form the query
     query = "_".join(query_words)
 
+    # Set a thumbnail for the embed (optional)
+    
+
+
     # Danbooru API URL to fetch a random image with the specified query
     r34_url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&limit=50&tags={query}&json=1"
     print("pase")
@@ -185,10 +189,15 @@ async def r34(ctx, *query_words):
                 await ctx.send(f"Tag '{query}' not found.")
             else:
                 print(r34_data)
-                image_url = r34_data[random.randint(1, 50)]["file_url"]
-                sauce = r34_data[random.randint(1, 50)]["source"]
-                await ctx.send(image_url)
-                await ctx.send(f"Salsa {sauce}")
+                embed = discord.Embed(
+                    title="Rule 34",
+                    description="Salsa "+ r34_data[random.randint(1, 50)]["source"],
+                    color=discord.Color.blue()  # You can set the color of the embed.
+                )
+
+                embed.set_image(url=r34_data[random.randint(1, 50)]["file_url"])
+                await ctx.send(embed=embed)
+                # await ctx.send(f"Salsa {sauce}", embed=embed)
 
         else:
             await ctx.send("Unable to find an image for the specified query.")
@@ -202,6 +211,21 @@ async def gei(ctx):
   await ctx.message.delete()
   await ctx.send(pasta)
 
+@bot.command()
+async def speak(ctx, channel_name, *, text_to_speak):
+    # Find the voice channel by name
+    for guild in bot.guilds:
+        for voice_channel in guild.voice_channels:
+            if voice_channel.name == channel_name:
+                voice_channel_to_join = voice_channel
+                break
+
+    if 'voice_channel_to_join' in locals():
+        voice_client = await voice_channel_to_join.connect()
+        await voice_client.say(text_to_speak, tts=True)
+        await voice_client.disconnect()
+    else:
+        await ctx.send(f"Voice channel '{channel_name}' not found.")
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
 
