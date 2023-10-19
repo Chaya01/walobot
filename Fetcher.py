@@ -12,7 +12,7 @@ class FetchImages:
     def find_random_image_tenor(self):
         try:
             url_tenor_random = 'https://g.tenor.com/v1/random?q={}&key=LIVDSRZULELA&limit=1'.format(self.searchTag)
-            # Make a request to the Danbooru API
+            # Make a request to the Tenor API
             response = requests.get(url_tenor_random)
 
             if response.status_code == 200:
