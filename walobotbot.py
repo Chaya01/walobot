@@ -116,7 +116,8 @@ async def tmr(ctx):
 
     await ctx.message.delete()
     await ctx.send(final_string)
-    await ctx.send(image.find_random_image_tenor())
+    message = await ctx.send(image.find_random_image_tenor())
+    await message.add_reaction("🇵🇪")
 
 
 @bot.command()       
@@ -226,6 +227,26 @@ async def speak(ctx, channel_name, *, text_to_speak):
         await voice_client.disconnect()
     else:
         await ctx.send(f"Voice channel '{channel_name}' not found.")
+        
+@bot.command()       
+async def pepe(ctx): 
+  username = ctx.author.name
+  pepe = '<:12g_ysp_pepe_king:1163577163086311527>'
+  pepe_cowboy = '<a:pepe_cowboy_fast:1163577259182018643>'
+
+  where_da_pepes_at = bot.get_channel(1162571489581744128)
+  await ctx.message.delete()
+  await where_da_pepes_at.send(pepe_cowboy)
+
+@bot.command()       
+async def peru(ctx): 
+  username = ctx.author.name
+
+  await ctx.message.delete()
+  message = await ctx.send("VIVA EL PERU CARAJO")
+  await message.add_reaction("🇵🇪")
+
+
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
 
