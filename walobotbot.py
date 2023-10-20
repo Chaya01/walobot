@@ -170,25 +170,24 @@ async def r34(ctx, *query_words):
     query = "_".join(query_words)
 
     # Danbooru API URL to fetch a random image with the specified query
-    r34_url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&limit=50&tags={query}&json=1"\
+    r34_url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&limit=50&tags={query}&json=1"
     
     try:
         # Make a request to the Danbooru API
         response = requests.get(r34_url)
-
-        if response.status_code == 200:
+        if response.text != '':
             r34_data = response.json()
-
+            rando_number = random.randint(0, len(r34_data))
             if not r34_data:
                 await ctx.send(f"Tag '{query}' not found.")
             else:
                 embed = discord.Embed(
                     title="Rule 34",
-                    description="Salsa "+ r34_data[random.randint(1, 50)]["source"],
+                    description="Salsa "+ r34_data[rando_number]["source"],
                     color=discord.Color.blue()  # You can set the color of the embed.
                 )
-
-                embed.set_image(url=r34_data[random.randint(1, 50)]["file_url"])
+                
+                embed.set_image(url=r34_data[rando_number]["file_url"])
                 await ctx.send(embed=embed)
                 # await ctx.send(f"Salsa {sauce}", embed=embed)
 
