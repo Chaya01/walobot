@@ -45,6 +45,18 @@ async def on_message(message):
   
     if message.author == bot.user: 
         return
+    
+    pattern = r'\bonce\b'
+    pattern2 = r'\b11\b'
+
+    if re.search(pattern, message.content.lower()):
+        response = f"{message.author.mention} chupalo entonce"
+        await message.add_reaction("😂")  # React with a laughing  emoji
+        await message.channel.send(response)
+    elif re.search(pattern2, message.content.lower()):
+        response = f"{message.author.mention} chupalo entonce"
+        await message.add_reaction("😂")  # React with a laughing  emoji
+        await message.channel.send(response)
   
     if channel == "shipoppin": 
         if user_message.lower() == "hello" or user_message.lower() == "hi": 
@@ -242,6 +254,8 @@ async def peru(ctx):
   await ctx.message.delete()
   message = await ctx.send("VIVA EL PERU CARAJO")
   await message.add_reaction("🇵🇪")
+
+
 
 
 # Run the bot with your bot token
