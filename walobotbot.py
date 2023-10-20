@@ -46,18 +46,18 @@ async def on_message(message):
     if message.author == bot.user: 
         return
     
-    pattern = r'\bonce\b'
-    pattern2 = r'\b11\b'
+    pattern = r'\bonce\b|\b11\b'  # Combine both patterns using the OR operator (|)
 
     if re.search(pattern, message.content.lower()):
         response = f"{message.author.mention} chupalo entonce"
-        await message.add_reaction("😂")  # React with a laughing  emoji
+        await message.add_reaction("😂")  # React with a laughing emoji
         await message.channel.send(response)
-    elif re.search(pattern2, message.content.lower()):
-        response = f"{message.author.mention} chupalo entonce"
-        await message.add_reaction("😂")  # React with a laughing  emoji
-        await message.channel.send(response)
-  
+
+        image_url = 'https://pbs.twimg.com/media/E13OVmpXMAEXAEz?format=jpg&name=small'
+        await message.channel.send(image_url)
+ 
+
+#quitese
     if channel == "shipoppin": 
         if user_message.lower() == "hello" or user_message.lower() == "hi": 
             await message.channel.send(f'Hello {username}') 
