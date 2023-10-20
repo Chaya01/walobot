@@ -184,7 +184,7 @@ async def r34(ctx, *query_words):
 
                 
                 if r34_data[rando_number]["file_url"].endswith('.mp4'):
-                    await ctx.send("Salsa {}".format(r34_data[rando_number]["source"]), embed=embed)
+                    await ctx.send("Salsa {}".format(r34_data[rando_number]["source"]))
                     await ctx.send(r34_data[rando_number]["file_url"])
 
                 else:
