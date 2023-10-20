@@ -181,15 +181,21 @@ async def r34(ctx, *query_words):
             if not r34_data:
                 await ctx.send(f"Tag '{query}' not found.")
             else:
-                embed = discord.Embed(
+
+                
+                if r34_data[rando_number]["file_url"].endswith('.mp4'):
+                    await ctx.send("Salsa {}".format(r34_data[rando_number]["source"]), embed=embed)
+                    await ctx.send(r34_data[rando_number]["file_url"])
+
+                else:
+                    embed = discord.Embed(
                     title="Rule 34",
                     description="Salsa "+ r34_data[rando_number]["source"],
                     color=discord.Color.blue()  # You can set the color of the embed.
                 )
-                
-                embed.set_image(url=r34_data[rando_number]["file_url"])
-                await ctx.send(embed=embed)
-                # await ctx.send(f"Salsa {sauce}", embed=embed)
+                    embed.set_image(url=r34_data[rando_number]["file_url"])
+                    await ctx.send(embed=embed)
+                    
 
         else:
             await ctx.send("Unable to find an image for the specified query.")
