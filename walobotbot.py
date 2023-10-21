@@ -66,6 +66,18 @@ async def on_message(message):
     if message.author == bot.user: 
         return
     
+    pattern = r'\bonce\b|\b11\b'  # Combine both patterns using the OR operator (|)
+
+    if re.search(pattern, message.content.lower()):
+        response = f"{message.author.mention} chupalo entonce"
+        await message.add_reaction("😂")  # React with a laughing emoji
+        await message.channel.send(response)
+
+        image_url = 'https://pbs.twimg.com/media/E13OVmpXMAEXAEz?format=jpg&name=small'
+        await message.channel.send(image_url)
+ 
+
+#quitese
     nwords = r'\bnigger\b|\bnigg\b|\bnegra\b|\bnegro\b|\bperuano\b'  # Combine both patterns using the OR operator (|)
 
     if re.search(nwords, message.content.lower()):
@@ -319,6 +331,8 @@ async def nuke(ctx, *tags):
             )
         embed.set_image(url=url_img)
         await ctx.send(embed=embed)
+
+
 
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
