@@ -3,3 +3,4 @@ myenv
 myenv/Scripts/python.exe
 docker-compose.yml
 Dockerfile
+.venv
