@@ -290,12 +290,13 @@ async def pepe(ctx):
     pepes = Pepe.Pepe()
 
     where_da_pepes_at = bot.get_channel(1162571489581744128)
-    ctx.message.delete()
+    await ctx.message.delete()
     await where_da_pepes_at.send(pepes.pick_random())
 
 @bot.command()       
 async def peru(ctx): 
-    ctx.message.delete()
+    
+    await ctx.message.delete()
     message = await ctx.send("VIVA EL PERU CARAJO")
     await message.add_reaction("🇵🇪")
 
