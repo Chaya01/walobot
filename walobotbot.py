@@ -7,6 +7,8 @@ import re
 from Fetcher import FetchImages as fetcher
 from Booru import Fetchbooru
 import json
+from nhentaiScrap import HentaiScrap
+import Pepe
 
 # Define your bot's command prefix
 #bot_prefix = "!"
@@ -250,10 +252,10 @@ async def r34(ctx, *query_words):
 
 @bot.command()       
 async def gei(ctx): 
-  username = ctx.author.name
-  pasta = 'No soy gay pero soy peruano y tengo una fantasia donde Perú invade Chile y Chile tiene que exportar esclavos femboys para satisfacer oficiales peruanos de alto rango. Me imagino que soy un comandante poderoso alto, con una mandibula cuadrada y con músculos masivos. Mi femboy es un pequeño chileno timido con piel palida que viene a mi habitacion. Lo agarro con mis poderosos brazos y lo beso a la fuerza, presionando su pecho contra el mio. Lo tiro contra la cama con mis grandes brazos quitándole sus pequeños calzones vírgenes. Le muestro mi masivo mastodonte peruano, y despues se la meto con todo, follándolo con una fuerza inhumana. Cada movimiento lo hace gemir, y finalrnente me corro en su pequeño culito chileno, dejando el semen corriendole por sus pequeñas nalgas, y después lo abrazo con mis grandes y fuertes brazos peruanos haciendolo dormir en mi pecho ¿Algún otro hetero tiene este tipo de fantasias?'
-  await ctx.message.delete()
-  await ctx.send(pasta)
+    username = ctx.author.name
+    pasta = 'No soy gay pero soy peruano y tengo una fantasia donde Perú invade Chile y Chile tiene que exportar esclavos femboys para satisfacer oficiales peruanos de alto rango. Me imagino que soy un comandante poderoso alto, con una mandibula cuadrada y con músculos masivos. Mi femboy es un pequeño chileno timido con piel palida que viene a mi habitacion. Lo agarro con mis poderosos brazos y lo beso a la fuerza, presionando su pecho contra el mio. Lo tiro contra la cama con mis grandes brazos quitándole sus pequeños calzones vírgenes. Le muestro mi masivo mastodonte peruano, y despues se la meto con todo, follándolo con una fuerza inhumana. Cada movimiento lo hace gemir, y finalrnente me corro en su pequeño culito chileno, dejando el semen corriendole por sus pequeñas nalgas, y después lo abrazo con mis grandes y fuertes brazos peruanos haciendolo dormir en mi pecho ¿Algún otro hetero tiene este tipo de fantasias?'
+    await ctx.message.delete()
+    await ctx.send(pasta)
 
 @bot.command()
 async def speak(ctx, channel_name, *, text_to_speak):
@@ -271,23 +273,19 @@ async def speak(ctx, channel_name, *, text_to_speak):
     else:
         await ctx.send(f"Voice channel '{channel_name}' not found.")
         
-@bot.command()       
-async def pepe(ctx): 
-  username = ctx.author.name
-  pepe = '<:12g_ysp_pepe_king:1163577163086311527>'
-  pepe_cowboy = '<a:pepe_cowboy_fast:1163577259182018643>'
+@bot.command()
+async def pepe(ctx):
+    pepes = Pepe.Pepe()
 
-  where_da_pepes_at = bot.get_channel(1162571489581744128)
-  await ctx.message.delete()
-  await where_da_pepes_at.send(pepe_cowboy)
+    where_da_pepes_at = bot.get_channel(1162571489581744128)
+    ctx.message.delete()
+    await where_da_pepes_at.send(pepes.pick_random())
 
 @bot.command()       
 async def peru(ctx): 
-  username = ctx.author.name
-
-  ctx.message.delete()
-  message = await ctx.send("VIVA EL PERU CARAJO")
-  await message.add_reaction("🇵🇪")
+    ctx.message.delete()
+    message = await ctx.send("VIVA EL PERU CARAJO")
+    await message.add_reaction("🇵🇪")
 
 @bot.command()
 async def contador(ctx, member: discord.Member):
@@ -297,5 +295,30 @@ async def contador(ctx, member: discord.Member):
         await ctx.send(f'{member.mention} le han pegado {count} wates.')
     else:
         await ctx.send(f'{member.mention} no tiene wates, pegenle uno porfa.')
+
+@bot.command()       
+async def nuke(ctx, *tags): 
+    tags = "+".join(tags)
+    init_scrap = HentaiScrap()
+
+    if tags == '':
+        title, url_img, url_manga = init_scrap.hentai_scrap()
+        embed = discord.Embed(
+            title=title,
+            description="Preview: "+ url_manga,
+            color=discord.Color.blue()  # You can set the color of the embed.
+            )
+        embed.set_image(url=url_img)
+        await ctx.send(embed=embed)
+    else:
+        title, url_img, url_manga = init_scrap.hentai_tag(tags)
+        embed = discord.Embed(
+            title=title,
+            description="Preview: "+ url_manga,
+            color=discord.Color.blue()  # You can set the color of the embed.
+            )
+        embed.set_image(url=url_img)
+        await ctx.send(embed=embed)
+
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
