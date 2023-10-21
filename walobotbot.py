@@ -6,6 +6,7 @@ from discord.ext import commands
 import re
 from Fetcher import FetchImages as fetcher
 from Booru import Fetchbooru
+import Pepe
 
 # Define your bot's command prefix
 #bot_prefix = "!"
@@ -225,15 +226,13 @@ async def speak(ctx, channel_name, *, text_to_speak):
     else:
         await ctx.send(f"Voice channel '{channel_name}' not found.")
         
-@bot.command()       
-async def pepe(ctx): 
-  username = ctx.author.name
-  pepe = '<:12g_ysp_pepe_king:1163577163086311527>'
-  pepe_cowboy = '<a:pepe_cowboy_fast:1163577259182018643>'
+@bot.command()
+async def pepe(ctx):
+  pepes = Pepe.Pepe()
 
   where_da_pepes_at = bot.get_channel(1162571489581744128)
   await ctx.message.delete()
-  await where_da_pepes_at.send(pepe_cowboy)
+  await where_da_pepes_at.send(pepes.pick_random())
 
 @bot.command()       
 async def peru(ctx): 
