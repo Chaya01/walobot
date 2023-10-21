@@ -186,10 +186,13 @@ async def wate(ctx, member: discord.Member = None):
         final_string = ctx.author.mention+ ' le ha pegado un wate a ' + member.mention
 
     global contador_de_wates
-    if member.id in contador_de_wates:
-        contador_de_wates[member.id] += 1
-    else:
-        contador_de_wates[member.id] = 1
+    
+    if member is not None:
+        if member.id in contador_de_wates:
+            contador_de_wates[member.id] += 1
+        else:
+            contador_de_wates[member.id] = 1
+
 
     image_fetcher = fetcher("slap")
     image = image_fetcher.find_random_image_tenor()
