@@ -6,6 +6,7 @@ from discord.ext import commands
 import re
 from Fetcher import FetchImages as fetcher
 from Booru import Fetchbooru
+from nhentaiScrap import HentaiScrap
 import Pepe
 
 # Define your bot's command prefix
@@ -81,7 +82,7 @@ async def danbooru(ctx, *query_words):
 
 @bot.command()
 async def tmr(ctx):
-    final_string = '';
+    final_string = ''
     rand_number = random.randint(1, 6)
     #Generate a int based on a random nuumber
     switch_dict = {
@@ -236,12 +237,36 @@ async def pepe(ctx):
 
 @bot.command()       
 async def peru(ctx): 
-  username = ctx.author.name
+    username = ctx.author.name
 
-  await ctx.message.delete()
-  message = await ctx.send("VIVA EL PERU CARAJO")
-  await message.add_reaction("🇵🇪")
+    ctx.message.delete()
+    message = await ctx.send("VIVA EL PERU CARAJO")
+    await message.add_reaction("🇵🇪")
 
+
+@bot.command()       
+async def nuke(ctx, *tags): 
+    tags = "+".join(tags)
+    init_scrap = HentaiScrap()
+
+    if tags == '':
+        title, url_img, url_manga = init_scrap.hentai_scrap()
+        embed = discord.Embed(
+            title=title,
+            description="Preview: "+ url_manga,
+            color=discord.Color.blue()  # You can set the color of the embed.
+            )
+        embed.set_image(url=url_img)
+        await ctx.send(embed=embed)
+    else:
+        title, url_img, url_manga = init_scrap.hentai_tag(tags)
+        embed = discord.Embed(
+            title=title,
+            description="Preview: "+ url_manga,
+            color=discord.Color.blue()  # You can set the color of the embed.
+            )
+        embed.set_image(url=url_img)
+        await ctx.send(embed=embed)
 
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
