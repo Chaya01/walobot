@@ -185,17 +185,24 @@ async def wate(ctx, member: discord.Member = None):
     else:
         final_string = ctx.author.mention+ ' le ha pegado un wate a ' + member.mention
 
-    image = fetcher("slap")
-
     global contador_de_wates
     if member.id in contador_de_wates:
         contador_de_wates[member.id] += 1
     else:
         contador_de_wates[member.id] = 1
 
+    image_fetcher = fetcher("slap")
+    image = image_fetcher.find_random_image_tenor()
+
+    embed = discord.Embed(
+                    title="Avíspate po",
+                    description=final_string,
+                    color=discord.Color.blurple()  # You can set the color of the embed.
+                )
+    embed.set_image(url=image)
     await ctx.message.delete()
-    await ctx.send(final_string)
-    await ctx.send(image.find_random_image_tenor())
+    combos = await ctx.send(embed=embed)
+    await combos.add_reaction("👋")
 
 
 @bot.command() 
@@ -214,11 +221,18 @@ async def combos(ctx, *members: discord.Member):
             users = users + member.mention + " "
         final_string = ctx.author.mention+ ' ha repartdo combos a ' + users
 
-    image = fetcher("punch")
+    image_fetcher = fetcher("punch")
+    image = image_fetcher.find_random_image_tenor()
 
+    embed = discord.Embed(
+                    title="Shispoppin Boxing Ring",
+                    description=final_string,
+                    color=discord.Color.red()  # You can set the color of the embed.
+                )
+    embed.set_image(url=image)
     await ctx.message.delete()
-    await ctx.send(final_string)
-    await ctx.send(image.find_random_image_tenor())
+    combos = await ctx.send(embed=embed)
+    await combos.add_reaction(Pepe.Pepe().link("pepebox90"))
 
 
 @bot.command()
@@ -305,7 +319,7 @@ async def contador(ctx, member: discord.Member):
     global contador_de_wates
     if member.id in contador_de_wates:
         count = contador_de_wates[member.id]
-        await ctx.send(f'{member.mention} le han pegado {count} wates.')
+        await ctx.send(f'A {member.mention} le han pegado {count} wates.')
     else:
         await ctx.send(f'{member.mention} no tiene wates, pegenle uno porfa.')
 
