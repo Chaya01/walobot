@@ -6,6 +6,7 @@ from discord.ext import commands
 import re
 from Fetcher import FetchImages as fetcher
 from Booru import Fetchbooru
+import json
 
 # Define your bot's command prefix
 #bot_prefix = "!"
@@ -16,12 +17,29 @@ intents.message_content = True  # Enable the message content intent
 
 # Create a bot instance with the intents parameter
 bot = commands.Bot(command_prefix='$', intents=intents)
-
+#### contadores 
+contador_de_wates = {}
+""""
+def load_contador_de_wates():
+    try:
+        with open('contador_de_wates.json', 'r') as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+    
+def save_contador_de_wates(contador):
+    with open('contador_de_wates.json', 'w') as file:
+        json.dump(contador, file, indent=4)
+"""
+### contadores 
 
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
     print(f'Connected to the following guilds:')
+#    global contador_de_wates
+#    contador_de_wates = load_contador_de_wates
+
     for guild in bot.guilds:
         print(f'- {guild.name} (ID: {guild.id})')
 
@@ -45,6 +63,24 @@ async def on_message(message):
   
     if message.author == bot.user: 
         return
+    
+    nwords = r'\bnigger\b|\bnigg\b|\bnegra\b|\bnegro\b|\bperuano\b'  # Combine both patterns using the OR operator (|)
+
+    if re.search(nwords, message.content.lower()):
+        response = f"{message.author.mention} I do Not Asociate with Niggers"
+        await message.add_reaction("😡")  # React with a laughing emoji
+        await message.channel.send(response)
+
+        random_n = random.randint(1,5)
+        switch_img = {
+            1:'https://www.photofunky.net/output/image/2/9/9/6/299612/photofunky.gif',
+            2:'https://tenor.com/view/workaholics-adam-devine-adam-demamp-a-little-racis-racist-gif-4261185',
+            3:'https://tenor.com/view/what-you-did-is-totally-stupid-and-racist-kyle-broflovski-south-park-fat-butt-and-pancake-head-s7e5-gif-22279892',
+            4:'https://tenor.com/view/my-reaction-to-that-information-gif-26355243',
+            5:'https://tenor.com/view/funny-trol-gif-20954828',
+        }
+        image_url = switch_img.get(random_n, "{}")
+        await message.channel.send(image_url)
   
     if channel == "shipoppin": 
         if user_message.lower() == "hello" or user_message.lower() == "hi": 
@@ -80,8 +116,8 @@ async def danbooru(ctx, *query_words):
 
 @bot.command()
 async def tmr(ctx):
-    final_string = '';
-    rand_number = random.randint(1, 6)
+    final_string = ''
+    rand_number = random.randint(1, 7)
     #Generate a int based on a random nuumber
     switch_dict = {
         1: "@everyone {} Ha hecho el llamado a la DOTA",
@@ -90,6 +126,7 @@ async def tmr(ctx):
         4: "@everyone {} dice que carrea",
         5: "@everyone Cabros me mataron - {}",
         6: "@everyone EKIS DE - {}",
+        7: "@everyone CAALLAA OEE DAWN DE MRD"
     }
 
     final_string = switch_dict.get(rand_number, "{}").format(ctx.author.mention)
@@ -135,6 +172,12 @@ async def wate(ctx, member: discord.Member = None):
         final_string = ctx.author.mention+ ' le ha pegado un wate a ' + member.mention
 
     image = fetcher("slap")
+
+    global contador_de_wates
+    if member.id in contador_de_wates:
+        contador_de_wates[member.id] += 1
+    else:
+        contador_de_wates[member.id] = 1
 
     await ctx.message.delete()
     await ctx.send(final_string)
@@ -194,7 +237,10 @@ async def r34(ctx, *query_words):
                     color=discord.Color.blue()  # You can set the color of the embed.
                 )
                     embed.set_image(url=r34_data[rando_number]["file_url"])
-                    await ctx.send(embed=embed)
+                    lewd = await ctx.send(embed=embed)
+                    await lewd.add_reaction("<:nsfw:1163612238830112789>")
+                    await lewd.add_reaction("<:nsfw_shy82:1163612245419376661>")
+                    await lewd.add_reaction("<:astolfo_lewd:1163612224590450778>")
                     
 
         else:
@@ -239,12 +285,17 @@ async def pepe(ctx):
 async def peru(ctx): 
   username = ctx.author.name
 
-  await ctx.message.delete()
+  ctx.message.delete()
   message = await ctx.send("VIVA EL PERU CARAJO")
   await message.add_reaction("🇵🇪")
 
-
+@bot.command()
+async def contador(ctx, member: discord.Member):
+    global contador_de_wates
+    if member.id in contador_de_wates:
+        count = contador_de_wates[member.id]
+        await ctx.send(f'{member.mention} le han pegado {count} wates.')
+    else:
+        await ctx.send(f'{member.mention} no tiene wates, pegenle uno porfa.')
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
-
-
