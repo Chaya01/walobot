@@ -42,12 +42,12 @@ class Pepe:
             "zpepelmao": "<a:zpepelmao:1163612258979553312>",
         }
 
-    def link(self, pepe_tag):
-        var = self.pepes[pepe_tag]
-        if var == None:
-            return '\N{OPEN HANDS SIGN}'
-        else:
-            return var
+    def pick_one(self, pepe_tag):
+        try: 
+            list(self.pepes.keys()).index(pepe_tag)
+            return self.pepes[pepe_tag]
+        except ValueError:
+            return '🇵🇪'
 
     def pick_random(self):
         pepe_values = list(self.pepes.values())
