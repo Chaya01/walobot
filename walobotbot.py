@@ -350,7 +350,21 @@ async def nuke(ctx, *tags):
         embed.set_image(url=url_img)
         await ctx.send(embed=embed)
 
+@bot.command()       
+async def npepe(ctx, reaction = None):
 
+    channel = discord.utils.get(bot.get_all_channels(), name=str(ctx.channel))
+    await ctx.message.delete()
+
+    pepes = Pepe.Pepe()
+    react = ''
+    if reaction is None:
+        react = pepes.pick_random()
+    else:
+        react = pepes.pick_one(reaction)
+
+    last = [message async for message in bot.get_channel(channel.id).history(limit=1)]
+    await last[0].add_reaction(react)
 
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
