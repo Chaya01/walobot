@@ -9,7 +9,9 @@ from Booru import Fetchbooru
 import json
 from nhentaiScrap import HentaiScrap
 import Pepe
-
+from newsapiclass import News as news
+from dotenv import load_dotenv
+load_dotenv()
 # Define your bot's command prefix
 #bot_prefix = "!"
 
@@ -364,7 +366,28 @@ async def npepe(ctx, reaction = None):
         react = pepes.pick_one(reaction)
 
     last = [message async for message in bot.get_channel(channel.id).history(limit=1)]
-    await last[0].add_reaction(react)
+    await last[0].add_reaction(react) 
+
+@bot.command()
+async def somef1(ctx):
+    
+    await ctx.message.delete()
+
+    news_title_list, articles = news.select_formula_one_news_title_list()
+
+    select = discord.ui.Select(placeholder="Selecciona una opción: ",
+                               options=news_title_list)
+    
+    async def my_callback(interaction):
+        await interaction.response.edit_message(content=news.select_formula_one_news_from_option(articles=articles,option=int(select.values[0])),view=None)
+        view = None
+
+    select.callback = my_callback
+    view = discord.ui.View()
+    view.add_item(select)
+    await ctx.send(view=view)
+
+    
 
 # Run the bot with your bot token
-bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
+bot.run(token=os.environ.get("BOT_DISCORD_KEY"))
