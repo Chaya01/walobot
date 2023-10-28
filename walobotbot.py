@@ -1,12 +1,18 @@
-import discord
+#libs de python
 import random
 import os
-import requests
-from discord.ext import commands
 import re
-from Fetcher import FetchImages as fetcher
-from Booru import Fetchbooru
 import json
+import requests
+
+#libs 3rd party
+from discord.ext import commands
+from Fetcher import FetchImages as fetcher
+import discord
+
+#libs propias
+from Booru import Fetchbooru
+from music_player import MusicPlayer
 from nhentaiScrap import HentaiScrap
 import Pepe
 
@@ -365,6 +371,83 @@ async def npepe(ctx, reaction = None):
 
     last = [message async for message in bot.get_channel(channel.id).history(limit=1)]
     await last[0].add_reaction(react)
+
+@bot.command()
+async def music(ctx, *command):
+    playlist = []
+    player = MusicPlayer()
+    if not command:
+        await ctx.send('Please provide a subcommand. Use `$music help` for a list of available subcommands.')
+        return
+
+    if command[0] == 'play':
+        if len(command) < 2:
+            await ctx.send('Please provide a URL to play.')
+        else:
+            url = command[1]
+            playlist.append(url)
+            if len(playlist) == 1:
+                # If it's the first song in the playlist, start playing it
+                await player.play_music(ctx=ctx,url=url,discord=discord)
+                await player.stop_music()
+
+
+    elif command[0] == 'skip':
+        # Implement skip logic here
+        pass
+    elif command[0] == 'remove':
+
+        if len(command) < 2:
+            await ctx.send('Please provide a position to remove.')
+        else:
+            position = int(command[1])
+            playlist.pop(position)
+
+    elif command[0] == 'pladd':
+        if len(command) < 2:
+            await ctx.send('Please provide a URL to add to the playlist.')
+        else:
+            url = command[1]
+            playlist.append(url)
+            # Implement add to playlist logic here
+
+    elif command[0] == 'showpl':
+        ctx.send()
+        pass
+    elif command[0] == 'cerveza':
+        # Implement 'cerveza' logic here
+        pass
+    elif command[0] == 'cyberpunk':
+        # Implement 'cyberpunk' logic here
+        pass
+    elif command[0] == 'edgerunners':
+        # Implement 'edgerunners' logic here
+        pass
+    elif command[0] == 'roll20':
+        # Implement 'roll20' logic here
+        pass
+    elif command[0] == 'random':
+        # Implement 'random' logic here
+        pass
+    elif command[0] == 'help':
+        # Provide a list of available subcommands
+        available_commands = [
+            "$music play <url> - play a song from YouTube",
+            "$music skip - skip the last song in the playlist",
+            "$music remove <position> - remove a song at a specific position in the playlist",
+            "$music pladd <url> - add a song to the playlist",
+            "$music showpl - show the songs in the playlist",
+            "$music cerveza - play 'mujeres y cervecita'",
+            "$music cyberpunk - play 'chipinin de samurai'",
+            "$music edgerunners - play 'I wanna stay at your house'",
+            "$music roll20 - play a DnD song",
+            "$music random - play a random song"
+        ]
+        await ctx.send('\n'.join(available_commands))
+
+    else:
+        await ctx.send("Invalid subcommand. Use `$music help` for a list of available subcommands.")
+
 
 # Run the bot with your bot token
 bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
