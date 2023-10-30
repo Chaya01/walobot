@@ -375,6 +375,10 @@ async def somef1(ctx):
 
     news_title_list, articles = news.select_formula_one_news_title_list()
 
+    if(len(articles) == 0) :
+        await ctx.send('No hay noticias disponibles')
+        return 0
+
     select = discord.ui.Select(placeholder="Selecciona una opción: ",
                                options=news_title_list)
     
