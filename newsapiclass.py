@@ -12,7 +12,7 @@ class News:
         newsapi = NewsApiClient(api_key=os.environ.get("NEWS_API_KEY"))
 
         all_articles = newsapi.get_everything(q='formula1',
-                                            from_param=str(date.today()-timedelta(days=2)),
+                                            from_param=str(date.today()-timedelta(days=5)),
                                             to=str(date.today()),
                                             language='en',
                                             sort_by='publishedAt')
