@@ -245,6 +245,6 @@ async def peru(ctx):
 
 
 # Run the bot with your bot token
-bot.run('MTE2MjI2MjI1NTM0NjQwMTI4MA.GlKx-S.MPsVB0oXecrOKDtENJXkIGlJxQs5aDly2K8beI')
+bot.run('BOT_TOKEN')
 
 
